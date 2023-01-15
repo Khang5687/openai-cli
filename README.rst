@@ -6,7 +6,9 @@ Installation
 
 To install OpenAI CLI in Python virtual environment, run::
 
-    pip install openai-cli
+    git clone https://github.com/Khang5687/openai-cli
+    cd openai-cli
+    pip install .
 
 Token authentication
 --------------------
@@ -15,7 +17,14 @@ OpenAI API requires authentication token, which can be obtained on this page:
 https://beta.openai.com/account/api-keys
 
 Provide token to the CLI either through a command-line argument (``-t/--token <TOKEN>``)
-or through an environment variable (``OPENAI_API_TOKEN``).
+or through an environment variable (``JOHNNY_API_TOKEN``).
+
+Proxy configuration
+-------------------
+
+``<PROXY>`` must be in format of either ``username:password@host:port`` or ``host:port`` 
+Provide proxies either through the command-line argument (``--proxy <PROXY>```)
+or through an environment variable (``JOHNNY_PROXY_SERVER``)
 
 Usage
 -----

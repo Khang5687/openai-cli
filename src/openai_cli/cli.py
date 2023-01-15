@@ -13,7 +13,7 @@ def cli():
 
 def check_proxy(proxy: str) -> str:
     if not proxy:
-        proxy = os.environ.get("OPENAI_PROXY_SERVER", "")
+        proxy = os.environ.get("JOHNNY_PROXY_SERVER", "")
     if not proxy:
         return ""
     else:
@@ -31,9 +31,9 @@ def check_proxy(proxy: str) -> str:
 @click.option(
     "-m", "--model", default="text-davinci-003", help="OpenAI model option. (i.e. code-davinci-002)"
 )
-@click.option("-p", "--proxy", default=None, help="Define proxy server, via this option or \"OPENAI_PROXY_SERVER\" environment variable. In format of 'username:password@host:port' or 'host:port'")
+@click.option("-p", "--proxy", default=None, help="Define proxy server, via this option or \"JOHNNY_PROXY_SERVER\" environment variable. In format of 'username:password@host:port' or 'host:port'")
 def complete(source: io.TextIOWrapper, token: str, model: str, proxy: str) -> None:
-    """Return OpenAI completion for a prompt from SOURCE."""
+    """Return from SOURCE."""
     client = build_completion_client(token=get_token(token), proxy=check_proxy(proxy))
     prompt = source.read()
     result = client.generate_response(prompt, model)
@@ -46,9 +46,16 @@ def complete(source: io.TextIOWrapper, token: str, model: str, proxy: str) -> No
     "-m", "--model", default="text-davinci-003", help="OpenAI model option. (i.e. code-davinci-002)"
 )
 
-@click.option("-p", "--proxy", default=None, help="Define proxy server, via this option or \"OPENAI_PROXY_SERVER\" environment variable. In format of 'username:password@host:port' or 'host:port'")
+@click.option("-p", "--proxy", default=None, help="Define proxy server, via this option or \"JOHNNY_PROXY_SERVER\" environment variable. In format of 'username:password@host:port' or 'host:port'")
 def repl(token: str, model: str, proxy: str) -> None:
-    """Start interactive shell session for OpenAI completion API."""
+    """Start a stupid conversation with yourself"""
+    stupid = 1
+    while True:
+        input_string = input("Prompt: ")
+        if input_string == "5687":
+            stupid = 0
+        if stupid == 0:
+            break
     client = build_completion_client(token=get_token(token), proxy=check_proxy(proxy))
     while True:
         print(client.generate_response(input("Prompt: "), model))
@@ -57,11 +64,11 @@ def repl(token: str, model: str, proxy: str) -> None:
 
 def get_token(token: str) -> str:
     if not token:
-        token = os.environ.get("OPENAI_API_TOKEN", "")
+        token = os.environ.get("JOHNNY_API_TOKEN", "")
     if not token:
         raise click.exceptions.UsageError(
             message=(
-                "Either --token option or OPENAI_API_TOKEN environment variable must be provided"
+                "Either --token option or JOHNNY_API_TOKEN environment variable must be provided"
             )
         )
     return token
